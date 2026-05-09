@@ -15,3 +15,4 @@ from .presnet import PResNet
 from .test_resnet import MResNet
 from .timm_model import TimmModel
 from .torchvision_model import TorchVisionModel
+from .faster_block import FasterNetBackbone, fasternet_s
