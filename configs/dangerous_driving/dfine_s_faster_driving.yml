@@ -45,7 +45,7 @@ optimizer:
 
 
 # Increase to search for the optimal ema
-epochs: 80
+epochs: 200
 train_dataloader:
   total_batch_size: 4
   dataset:
@@ -53,9 +53,9 @@ train_dataloader:
     ann_file: dataset/annotations/instances_train.json
     transforms:
       policy:
-        epoch: 80
+        epoch: 200
   collate_fn:
-    stop_epoch: 80
+    stop_epoch: 200
     ema_restart_decay: 0.9999
     base_size_repeat: 20
 
@@ -74,8 +74,9 @@ TimmModel:
   pretrained: True
   return_layers: ['stages.1', 'stages.2', 'stages.3']
 
-postprocessor:
-  type: DetNMSPostProcessor
-  iou_threshold: 0.5
-  score_threshold: 0.3
-  keep_topk: 100
+DFINEPostProcessor:
+  num_top_queries: 300
+
+DFINECriterion:
+  gamma: 8.0
+  

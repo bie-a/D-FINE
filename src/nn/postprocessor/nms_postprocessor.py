@@ -36,6 +36,7 @@ class DetNMSPostProcessor(torch.nn.Module):
         self.logit_fmt = logit_fmt.lower()
         self.logit_func = getattr(F, self.logit_fmt, None)
         self.deploy_mode = False
+        self.remap_mscoco_category = False
 
     def forward(self, outputs: Dict[str, Tensor], orig_target_sizes: Tensor):
         logits, boxes = outputs["pred_logits"], outputs["pred_boxes"]
