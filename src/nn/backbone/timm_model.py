@@ -35,8 +35,11 @@ class TimmModel(torch.nn.Module):
             model.feature_info.module_name()
         ), f"return_layers should be a subset of {model.feature_info.module_name()}"
 
-        # self.model = model
-        self.model = IntermediateLayerGetter(model, return_layers)
+        # model.feature_info uses dotted names (e.g. 'stages.1'),
+        # but actual module children use underscores (e.g. 'stages_1').
+        # Map to actual child names for IntermediateLayerGetter.
+        fixed_return_layers = [name.replace('.', '_') for name in return_layers]
+        self.model = IntermediateLayerGetter(model, fixed_return_layers)
 
         return_idx = [model.feature_info.module_name().index(name) for name in return_layers]
         self.strides = [model.feature_info.reduction()[i] for i in return_idx]

@@ -6,11 +6,11 @@ __include__: [
   '../dfine/include/dfine_hgnetv2.yml',
 ]
 
-output_dir: improved_dfine_s   # 建议改成这个，虽然命令行也会覆盖
+output_dir: improved_dfine_s   # 锟斤拷锟斤拷某锟斤拷锟斤拷锟斤拷锟斤拷然锟斤拷锟斤拷锟斤拷也锟结覆锟斤拷
 
 
 DFINE:
-  backbone: FasterNetBackbone
+  backbone: TimmModel
 
 HGNetv2:
   pretrained: False
@@ -20,7 +20,7 @@ DFINETransformer:
   eval_idx: -1  # -2 -3 -4
 
 HybridEncoder:
-  in_channels: [256, 512, 1024]
+  in_channels: [192, 384, 768]
   hidden_dim: 256
   depth_mult: 0.34
   expansion: 0.5
@@ -69,8 +69,13 @@ num_classes: 8
 
 remap_mscoco_category: False
 
-FasterNetBackbone:
-  _name: FasterNetBackbone
-  width_mul: 1.0            # 可以不加，默认1.0
-  depths: [2, 2, 8, 2]
-  channels: [64, 128, 256, 512]   # 回归标准轻量通道
+TimmModel:
+  name: fasternet_t2
+  pretrained: True
+  return_layers: ['stages.1', 'stages.2', 'stages.3']
+
+postprocessor:
+  type: DetNMSPostProcessor
+  iou_threshold: 0.5
+  score_threshold: 0.3
+  keep_topk: 100
